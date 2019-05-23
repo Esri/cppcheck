@@ -30,6 +30,8 @@ project "cppcheck"
     "externals/tinyxml/*.cpp",
   }
 
+  local target_dir_platform=""
+
   -- -------------------------------------------------------------
   -- configurations
   -- -------------------------------------------------------------
@@ -50,6 +52,8 @@ project "cppcheck"
       links {
         "Shlwapi",
       }
+
+    target_dir_platform="win"
 
     -- -------------------------------------------------------------
     -- configuration { "windows", "Debug", "x32" }
@@ -115,6 +119,8 @@ project "cppcheck"
 
     -- configuration { "linux" }
 
+    target_dir_platform="linux"
+
     -- -------------------------------------------------------------
     -- configuration { "linux", "Debug", "x64" }
     -- -------------------------------------------------------------
@@ -155,6 +161,8 @@ project "cppcheck"
 
     -- configuration { "macosx" }
 
+    target_dir_platform="macos"
+
     -- -------------------------------------------------------------
     -- configuration { "macosx", "Debug", "x64" }
     -- -------------------------------------------------------------
@@ -181,3 +189,15 @@ project "cppcheck"
 
     -- -------------------------------------------------------------
   end
+
+  -- -------------------------------------------------------------
+  -- configuration { "*" }
+  -- -------------------------------------------------------------
+
+  configuration { "*" }
+
+    -- Remove the 'd' from debug builds
+    targetsuffix ""
+
+    -- Override the targetdir to the tools/cppcheck/bin/${os} directory
+    targetdir(_TOOLS_DIR .. "/cppcheck/bin/" .. target_dir_platform)
