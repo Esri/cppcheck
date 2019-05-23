@@ -45,7 +45,11 @@ project "cppcheck"
 
     -- project specific configuration settings
 
-    -- configuration { "windows" }
+    configuration { "windows" }
+
+      links {
+        "Shlwapi",
+      }
 
     -- -------------------------------------------------------------
     -- configuration { "windows", "Debug", "x32" }
