@@ -30,7 +30,7 @@ project "cppcheck"
     "externals/tinyxml/*.cpp",
   }
 
-  local target_dir_platform=""
+  local target_dir=""
 
   -- -------------------------------------------------------------
   -- configurations
@@ -47,13 +47,22 @@ project "cppcheck"
 
     -- project specific configuration settings
 
+    target_dir=_TOOLS_DIR .. "/cppcheck/bin/win"
+
     configuration { "windows" }
 
       links {
         "Shlwapi",
       }
 
-    target_dir_platform="win"
+      -- Copy the necessary cfg files that cppcheck requires to load at runtime
+      -- For Windows, we need to use copy which expects windows style path seperators
+      local source_path=path.translate(prjDir .. "/cfg/")
+      local destination_path=path.translate(target_dir)
+      postbuildcommands {
+        "copy " .. source_path .. "std.cfg " .. destination_path,
+        "copy " .. source_path .. "windows.cfg " .. destination_path,
+      }
 
     -- -------------------------------------------------------------
     -- configuration { "windows", "Debug", "x32" }
@@ -117,9 +126,14 @@ project "cppcheck"
 
     -- project specific configuration settings
 
-    -- configuration { "linux" }
+    target_dir=_TOOLS_DIR .. "/cppcheck/bin/linux"
 
-    target_dir_platform="linux"
+    configuration { "linux" }
+
+      -- Copy the necessary cfg files that cppcheck requires to load at runtime
+      postbuildcommands {
+        "cp cfg/std.cfg " .. target_dir,
+      }
 
     -- -------------------------------------------------------------
     -- configuration { "linux", "Debug", "x64" }
@@ -159,9 +173,14 @@ project "cppcheck"
 
     -- project specific configuration settings
 
-    -- configuration { "macosx" }
+    target_dir=_TOOLS_DIR .. "/cppcheck/bin/macos"
 
-    target_dir_platform="macos"
+    configuration { "macosx" }
+
+      -- Copy the necessary cfg files that cppcheck requires to load at runtime
+      postbuildcommands {
+        "cp cfg/std.cfg " .. target_dir,
+      }
 
     -- -------------------------------------------------------------
     -- configuration { "macosx", "Debug", "x64" }
@@ -200,4 +219,4 @@ project "cppcheck"
     targetsuffix ""
 
     -- Override the targetdir to the tools/cppcheck/bin/${os} directory
-    targetdir(_TOOLS_DIR .. "/cppcheck/bin/" .. target_dir_platform)
+    targetdir(target_dir)
