@@ -30,7 +30,7 @@ project "cppcheck"
     "externals/tinyxml/*.cpp",
   }
 
-  local target_dir=""
+  target_dir=_TOOLS_DIR .. "/cppcheck/bin"
 
   -- -------------------------------------------------------------
   -- configurations
@@ -46,8 +46,6 @@ project "cppcheck"
     dofile (_BUILD_DIR .. "/shared_win.lua")
 
     -- project specific configuration settings
-
-    target_dir=_TOOLS_DIR .. "/cppcheck/bin/win"
 
     configuration { "windows" }
 
@@ -126,8 +124,6 @@ project "cppcheck"
 
     -- project specific configuration settings
 
-    target_dir=_TOOLS_DIR .. "/cppcheck/bin/linux"
-
     configuration { "linux" }
 
       -- Copy the necessary cfg files that cppcheck requires to load at runtime
@@ -173,8 +169,6 @@ project "cppcheck"
 
     -- project specific configuration settings
 
-    target_dir=_TOOLS_DIR .. "/cppcheck/bin/macos"
-
     configuration { "macosx" }
 
       -- Copy the necessary cfg files that cppcheck requires to load at runtime
@@ -214,9 +208,9 @@ project "cppcheck"
   -- -------------------------------------------------------------
 
   configuration { "*" }
-
+  
     -- Remove the 'd' from debug builds
     targetsuffix ""
 
-    -- Override the targetdir to the tools/cppcheck/bin/${os} directory
+    -- Override the targetdir to the runtime/tools/cppcheck/bin directory
     targetdir(target_dir)
