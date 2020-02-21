@@ -1,6 +1,6 @@
 /*
  * Cppcheck - A tool for static C/C++ code analysis
- * Copyright (C) 2007-2018 Cppcheck team.
+ * Copyright (C) 2007-2019 Cppcheck team.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,10 +69,14 @@ public:
      */
     static void deleteTokens(Token *tok);
 
-    void addtoken(std::string str, const unsigned int lineno, const unsigned int fileno, bool split = false);
-    void addtoken(const Token *tok, const unsigned int lineno, const unsigned int fileno);
+    void addtoken(std::string str, const nonneg int lineno, const nonneg int fileno, bool split = false);
+    void addtoken(std::string str, const Token *locationTok);
 
-    static void insertTokens(Token *dest, const Token *src, unsigned int n);
+    void addtoken(const Token *tok, const nonneg int lineno, const nonneg int fileno);
+    void addtoken(const Token *tok, const Token *locationTok);
+    void addtoken(const Token *tok);
+
+    static void insertTokens(Token *dest, const Token *src, nonneg int n);
 
     /**
      * Copy tokens.
@@ -101,7 +105,7 @@ public:
     void deallocateTokens();
 
     /** append file name if seen the first time; return its index in any case */
-    unsigned int appendFileIfNew(const std::string &fileName);
+    int appendFileIfNew(const std::string &fileName);
 
     /** get first token of list */
     const Token *front() const {
@@ -168,6 +172,13 @@ public:
      * \return true if token was found in tokenlist, false else. In case of nullptr true is returned.
      */
     bool validateToken(const Token* tok) const;
+
+    /**
+     * Convert platform dependent types to standard types.
+     * 32 bits: size_t -> unsigned long
+     * 64 bits: size_t -> unsigned long long
+     */
+    void simplifyPlatformTypes();
 
     /**
      * Collapse compound standard types into a single token.
