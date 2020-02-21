@@ -20,36 +20,48 @@
 
 #include "valueflow.h"
 
-bool Settings::mTerminated;
+std::atomic<bool> Settings::mTerminated;
+
+const char Settings::SafeChecks::XmlRootName[] = "safe-checks";
+const char Settings::SafeChecks::XmlClasses[] = "class-public";
+const char Settings::SafeChecks::XmlExternalFunctions[] = "external-functions";
+const char Settings::SafeChecks::XmlInternalFunctions[] = "internal-functions";
+const char Settings::SafeChecks::XmlExternalVariables[] = "external-variables";
 
 Settings::Settings()
     : mEnabled(0),
+      checkConfiguration(false),
+      checkLibrary(false),
+      checkHeaders(true),
+      checkUnusedTemplates(false),
       debugSimplified(false),
       debugnormal(false),
       debugwarnings(false),
       debugtemplate(false),
       dump(false),
-      exceptionHandling(false),
-      inconclusive(false),
-      jointSuppressionReport(false),
-      maxCtuDepth(2),
-      experimental(false),
-      quiet(false),
-      inlineSuppressions(false),
-      verbose(false),
-      force(false),
-      relativePaths(false),
-      xml(false), xml_version(2),
-      jobs(1),
-      loadAverage(0),
-      exitCode(0),
-      showtime(SHOWTIME_NONE),
-      preprocessOnly(false),
-      maxConfigs(12),
       enforcedLang(None),
+      exceptionHandling(false),
+      exitCode(0),
+      experimental(false),
+      force(false),
+      inconclusive(false),
+      verification(false),
+      debugVerification(false),
+      inlineSuppressions(false),
+      jobs(1),
+      jointSuppressionReport(false),
+      loadAverage(0),
+      maxConfigs(12),
+      checkAllConfigurations(true),
+      maxCtuDepth(2),
+      preprocessOnly(false),
+      quiet(false),
+      relativePaths(false),
       reportProgress(false),
-      checkConfiguration(false),
-      checkLibrary(false)
+      showtime(SHOWTIME_MODES::SHOWTIME_NONE),
+      verbose(false),
+      xml(false),
+      xml_version(2)
 {
 }
 

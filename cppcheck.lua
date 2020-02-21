@@ -18,6 +18,7 @@ project "cppcheck"
   uuid "810F8D2E-8D3F-4A9D-ADC5-308233BBC3EE"
 
   includedirs {
+    "externals",
     "externals/simplecpp",
     "externals/tinyxml",
     "lib",
