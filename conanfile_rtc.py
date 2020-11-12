@@ -16,4 +16,4 @@ class CppcheckConan(ConanFile):
 
         # tools
         tools = "tools/cppcheck"
-        self.copy("*", src=base + "../../" + tools, dst=tools)
+        self.copy("*", src=base + "../../" + tools, dst=tools, excludes=["*.exp", "*.lib", "*.pdb"])
